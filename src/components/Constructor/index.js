@@ -43,7 +43,7 @@ export const Constructor = ({shape}) => {
   }
 
   const rotate_left = () => {
-    if(!ptrn) return
+    if(ptrn === null) return
     const st = {...state}
     const {tiles} = st[shape]
     tiles[ptrn].rotate = tiles[ptrn].rotate === 0 ? 3 : tiles[ptrn].rotate - 1
@@ -51,7 +51,7 @@ export const Constructor = ({shape}) => {
   }
 
   const rotate_right = () => {
-    if(!ptrn) return
+    if(ptrn === null) return
     const st = {...state}
     const {tiles} = st[shape]
     tiles[ptrn].rotate = tiles[ptrn].rotate === 3 ? 0 : tiles[ptrn].rotate + 1
@@ -59,7 +59,7 @@ export const Constructor = ({shape}) => {
   }
 
   const remove_click = () => {
-    if(!ptrn) return
+    if(ptrn === null) return
     const st = {...state}
     const {tiles} = st[shape]
     tiles.splice(ptrn, 1)
@@ -100,7 +100,7 @@ export const Constructor = ({shape}) => {
         </Details>
       )}
       <Help>Добавь плитку<br/>в поле, ее можно<br/>повернуть<br/>или удалить</Help>
-      <TurnRightBtn />
+      <TurnRightBtn onClick={rotate_right} />
       <TurnLeftBtn onClick={rotate_left} />
       <RemoveBtn onClick={remove_click} />
       {state[shape].tiles.length > 0 &&

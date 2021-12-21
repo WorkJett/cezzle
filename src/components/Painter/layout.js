@@ -56,7 +56,10 @@ const color_add = ({color}) => color
 export const Color = styled.div`
   width: 36px;
   height: 36px;
-  background-color: ${color_add};
+  background-position: center;
+  background-size: 36px 36px;
+  background-repeat: no-repeat;
+  background-image: url(${color_add});
 `
 
 export const Help = styled.div`

@@ -1,11 +1,11 @@
 {
   "colors": [
-    {"id": "color_1", "title": "белый", "color": "#FFFFFF"},
-    {"id": "color_2", "title": "цвет 1", "color": "#C7C5BA"},
-    {"id": "color_3", "title": "цвет 2", "color": "#859496"},
-    {"id": "color_4", "title": "цвет 3", "color": "#7D7970"},
-    {"id": "color_5", "title": "цвет 4", "color": "#C4C4C4"},
-    {"id": "color_6", "title": "цвет 5", "color": "#E7DFB6"}
+    {"id": "color_1", "title": "белый", "color": "#FFFFFF", "url": "/colors/1.png"},
+    {"id": "color_2", "title": "цвет 1", "color": "#C7C5BA", "url": "/colors/2.png"},
+    {"id": "color_3", "title": "цвет 2", "color": "#859496", "url": "/colors/3.png"},
+    {"id": "color_4", "title": "цвет 3", "color": "#7D7970", "url": "/colors/4.png"},
+    {"id": "color_5", "title": "цвет 4", "color": "#C4C4C4", "url": "/colors/5.png"},
+    {"id": "color_6", "title": "цвет 5", "color": "#E7DFB6", "url": "/colors/6.png"}
   ],
   "cube": {
     "collection": [{

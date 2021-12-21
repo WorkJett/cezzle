@@ -15,6 +15,16 @@ import {
 } from './layout'
 import {useSt} from 'state/context'
 
+const get_url = url => `${process.env.PUBLIC_URL}${url}`
+
+const Pattern = ({id, url}) => {
+  return (
+    <pattern id={id} viewBox="0 0 311 311" width="100%" height="100%">
+      <image href={get_url(url)} width="311" height="311" />
+    </pattern>
+  )
+}
+
 export const Painter = ({pattern, shape}) => {
   const [current, setCurrent] = useState(0)
   const {state, setState} = useSt()
@@ -55,15 +65,20 @@ export const Painter = ({pattern, shape}) => {
       <Tile>
         {pattern && pal && pal.length === pattern.d.length && (
           <svg width="436" height="436" viewBox="0 0 436 436" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              {colors.map((color, idx) => (
+                <Pattern key={color.id} id={color.id} url={color.url} />
+              ))}
+            </defs>
             {pattern.d.map((path, idx) => (
-              <path key={idx} onClick={click(idx)} d={path} fill={pal[idx].color} stroke="#575756"/>
+              <path key={idx} onClick={click(idx)} d={path} fill={`url(#${pal[idx].id})`} stroke="#575756"/>
             ))}
           </svg>
         )}
       </Tile>
       <Palette>
         {colors.map((color, idx) => (
-          <ColorBox active={current === idx} onClick={() => setCurrent(idx)}><Color color={color.color} key={color.id} /></ColorBox>
+          <ColorBox active={current === idx} onClick={() => setCurrent(idx)}><Color color={get_url(color.url)} key={color.id} /></ColorBox>
         ))}
       </Palette>
       <Help>Сохрани или удали<br />готовую плитку</Help>
