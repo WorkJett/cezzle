@@ -246,7 +246,7 @@ const pattern_active = ({active}) => active ? `
   border-radius: 3px;
 ` : ''
 
-export const Pattern = styled.div`
+export const PatternBox = styled.div`
   width: 107px;
   height: 107px;
   flex-shrink: 0;
@@ -254,11 +254,10 @@ export const Pattern = styled.div`
   margin-left: 6px;
   box-sizing: border-box;
   ${shapeBlock_active}
-  background-position: center;
-  background-size: 100px 100px;
-  background-repeat: no-repeat;
-  background-image: url(${({pattern}) => pattern});
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `
 
 export const Price = styled.div`

@@ -1,12 +1,4 @@
-import {useState} from 'react'
-
-import pattern_1 from 'assets/patterns/pattern_1.svg'
-import pattern_2 from 'assets/patterns/pattern_2.svg'
-import pattern_3 from 'assets/patterns/pattern_3.svg'
-import pattern_4 from 'assets/patterns/pattern_4.svg'
-import pattern_5 from 'assets/patterns/pattern_5.svg'
-import pattern_6 from 'assets/patterns/pattern_6.svg'
-import pattern_7 from 'assets/patterns/pattern_7.svg'
+import {useState, useEffect} from 'react'
 
 import {
   Container,
@@ -26,7 +18,7 @@ import {
   Patterns,
   Left,
   Right,
-  Pattern,
+  PatternBox,
   Price,
   SpaceTitle,
   TypeTitle,
@@ -53,28 +45,12 @@ import {
 } from './layout'
 import {Painter} from 'components/Painter'
 import {Constructor} from 'components/Constructor'
-
-const collections = [
-  'BIO',
-  'BASIC',
-  'GEO',
-  'CLASSIC',
-  'ETHNO',
-  'ОДНОЦВЕТНЫЕ'
-]
-
-const patterns = [
-  pattern_1,
-  pattern_2,
-  pattern_3,
-  pattern_4,
-  pattern_5,
-  pattern_6,
-  pattern_7
-]
+import {Pattern} from 'components/Pattern'
+import {useSt} from 'state/context'
 
 export const App = () => {
-  const [shape, setShape] = useState(0)
+  const {state} = useSt()
+  const [shape, setShape] = useState('cube')
   const [coll, setColl] = useState(0)
   const [ptrn, setPtrn] = useState(0)
   const [length, setLength] = useState(3.2)
@@ -85,8 +61,8 @@ export const App = () => {
   const [name, setName] = useState('John Doe')
   const [phone, setPhone] = useState('+7 920 000 00 00')
 
-  const shape_click = idx => {
-    return () => setShape(idx)
+  const shape_click = shape => {
+    return () => setShape(shape)
   }
 
   const collection_item_click = idx => {
@@ -104,8 +80,8 @@ export const App = () => {
         <Description>Раскрась паттерн и сконструируй раскладку</Description>
         <One><Point>1</Point><Title>Выбери форму</Title></One>
         <Shapes>
-          <Cube active={shape === 0} onClick={shape_click(0)} />
-          <Hex active={shape === 1} onClick={shape_click(1)} />
+          <Cube active={shape === 'cube'} onClick={shape_click('cube')} />
+          <Hex active={shape === 'hex'} onClick={shape_click('hex')} />
         </Shapes>
         <ShapeSizes>
           <ShapeSize>20х20мм</ShapeSize>
@@ -113,26 +89,28 @@ export const App = () => {
         </ShapeSizes>
         <Two><Point>2</Point><Title>Выбери коллекцию</Title></Two>
         <Collection>
-          {collections.map((collection, idx) => (
-            <CollectionItem key={collection} onClick={collection_item_click(idx)} active={coll === idx}>{collection}</CollectionItem>
+          {state[shape].collection.map((collection, idx) => (
+            <CollectionItem key={collection.id} onClick={collection_item_click(idx)} active={coll === idx}>{collection.title}</CollectionItem>
           ))}
         </Collection>
         <Three><Point>3</Point><Title>Выбери паттерн</Title></Three>
         <Patterns>
           <Left />
-          {patterns.map((pattern, idx) => (
-            <Pattern pattern={pattern} active={ptrn === idx} onClick={pattern_click(idx)} key={pattern} />
+          {state[shape].collection[coll].patterns.map((pattern, idx) => (
+            <PatternBox active={ptrn === idx} onClick={pattern_click(idx)} key={pattern.id}>
+              <Pattern pattern={pattern} />
+            </PatternBox>
           ))}
           <Right />
         </Patterns>
         <Four><Point>4</Point><Title>Раскрась плитку</Title></Four>
-        <Painter />
+        <Painter shape={shape} pattern={state[shape].collection[coll].patterns[ptrn]} />
         <Five>
           <Point>5</Point>
           <Title>Создай свою раскладку</Title>
           <TitlePlus>Используй сохранённые паттерны и цвета</TitlePlus>
         </Five>
-        <Constructor />
+        <Constructor shape={shape} />
         <Six><Point>6</Point><Title>Рассчитай стоимость</Title></Six>
         <Price>
           <SpaceTitle>Укажи габариты помещения</SpaceTitle>

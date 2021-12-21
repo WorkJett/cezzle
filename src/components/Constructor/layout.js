@@ -13,17 +13,11 @@ export const Container = styled.div`
   grid-template-columns: 436px auto 1fr;
 `
 
-export const Grid = styled.div`
+export const GridBox = styled.div`
   width: 436px;
   height: 436px;
   grid-column: 1;
   grid-row: 1 / 4;
-
-  background-position: center;
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-image: url(${grid_svg});
-  cursor: pointer;
 `
 
 export const Patterns = styled.div`
@@ -56,14 +50,10 @@ const pattern_content = ({url}) => url ? `
   background-image: url(${empty_pattern_svg});
 `
 
-export const Pattern = styled.div`
+export const EmptyPattern = styled.div`
   width: 48px;
   height: 48px;
-  background-position: center;
-  background-size: contain;
-  background-repeat: no-repeat;
-  ${pattern_content}
-  cursor: pointer;
+  border: 1px solid #575756;
 `
 
 export const Details = styled.div`
@@ -150,7 +140,7 @@ export const PatternsTitle = styled.div`
 
 export const PatternsNames = styled.div`
   margin-top: 8px;
-  grid-column: 1;
+  grid-column: 1 / 4;
   grid-row: 5;
   display: flex;
   flex-direction: column;
