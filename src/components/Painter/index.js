@@ -14,16 +14,19 @@ import {
   ColorName
 } from './layout'
 import {useSt} from 'state/context'
+import {uniq} from 'helper'
 
 const get_url = url => `${process.env.PUBLIC_URL}${url}`
 
 const Pattern = ({id, url}) => {
   return (
-    <pattern id={id} viewBox="0 0 311 311" width="100%" height="100%">
-      <image href={get_url(url)} width="311" height="311" />
+    <pattern id={id} viewBox="0 0 436 436" width="436" height="436" patternUnits="userSpaceOnUse">
+      <image href={get_url(url)} width="436" height="436" />
     </pattern>
   )
 }
+
+let tile_gen = 0
 
 export const Painter = ({pattern, shape}) => {
   const [current, setCurrent] = useState(0)
@@ -44,10 +47,12 @@ export const Painter = ({pattern, shape}) => {
     const {tiles} = st[shape]
     if(tiles.length === 12) tiles.shift()
     tiles.push({
+      id: tile_gen,
       pattern,
       colors: pal,
       rotate: 0
     })
+    tile_gen++
     setState(st)
   }
 
@@ -60,18 +65,29 @@ export const Painter = ({pattern, shape}) => {
       setPal(new Array(pattern.d.length).fill(colors[0]))
   }, [pattern])
 
+  const
+    get_pal = idx => pal[idx] ? `url(#${pal[idx].id})` : '#FFFFFF',
+    uniq_pal = uniq(pal.map(color => color.title)),
+    width = shape === 'cube' ? '436' : '436',
+    height = shape === 'cube' ? '436' : '378',
+    viewbox = shape === 'cube' ? '0 0 436 436' : '0 0 436 378'
+
   return (
     <Container>
       <Tile>
         {pattern && pal && pal.length === pattern.d.length && (
-          <svg width="436" height="436" viewBox="0 0 436 436" xmlns="http://www.w3.org/2000/svg">
+          <svg width={width} height={height} viewBox={viewbox} xmlns="http://www.w3.org/2000/svg">
             <defs>
               {colors.map((color, idx) => (
-                <Pattern key={color.id} id={color.id} url={color.url} />
+                <>
+                  {color && (
+                    <Pattern key={color.id} id={color.id} url={color.url} />
+                  )}
+                </>
               ))}
             </defs>
             {pattern.d.map((path, idx) => (
-              <path key={idx} onClick={click(idx)} d={path} fill={`url(#${pal[idx].id})`} stroke="#575756"/>
+              <path key={idx} onClick={click(idx)} d={path} fill={get_pal(idx)} stroke="#575756"/>
             ))}
           </svg>
         )}
@@ -86,8 +102,12 @@ export const Painter = ({pattern, shape}) => {
       <RemoveBtn onClick={remove} />
       <ColorsTitle>Выбранные цвета:</ColorsTitle>
       <ColorNames>
-        {pal.map((color, idx) => (
-          <ColorName key={idx}>{idx + 1}. {color.title}</ColorName>
+        {uniq_pal.map((color, idx) => (
+          <>
+            {color && (
+              <ColorName key={idx}>{idx + 1}. {color}</ColorName>
+            )}
+          </>
         ))}
       </ColorNames>
     </Container>

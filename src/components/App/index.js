@@ -73,6 +73,9 @@ export const App = () => {
     return () => setPtrn(idx)
   }
 
+  const pattern_height = shape === 'cube' ? 96 : 83
+  const pattern_viewbox = shape === 'cube' ? null : '0 0 436 378'
+
   return (
     <Container>
       <Body>
@@ -98,7 +101,7 @@ export const App = () => {
           <Left />
           {state[shape].collection[coll].patterns.map((pattern, idx) => (
             <PatternBox active={ptrn === idx} onClick={pattern_click(idx)} key={pattern.id}>
-              <Pattern pattern={pattern} />
+              <Pattern height={pattern_height} pattern={pattern} viewbox={pattern_viewbox} />
             </PatternBox>
           ))}
           <Right />

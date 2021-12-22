@@ -4,14 +4,16 @@ const get_url = url => `${process.env.PUBLIC_URL}${url}`
 
 const Image = ({id, url}) => {
   return (
-    <pattern id={id} viewBox="0 0 311 311" width="100%" height="100%">
-      <image href={get_url(url)} width="311" height="311" />
+    <pattern id={id} viewBox="0 0 436 436" width="436" height="436" patternUnits="userSpaceOnUse">
+      <image href={get_url(url)} width="436" height="436" />
     </pattern>
   )
 }
 
 const Pattern = ({id, pattern, colors, rotate}) => {
-  const get_color = idx => colors ? `url(#image_${idx})` : '#FFFFFF'
+  const get_color_id = colors ? colors.map(color => color.id).reduce((prev, next) => `${prev}_${next}`) : '0'
+  const get_id = idx => `${pattern.id}_${get_color_id}_${idx}`
+  const get_color = idx => colors && colors[idx] ? `url(#image_${get_id(idx)})` : '#FFFFFF'
   const get_rotate = (rotate || 0) * 90
 
   return (
@@ -19,7 +21,7 @@ const Pattern = ({id, pattern, colors, rotate}) => {
       {colors && (
         <defs>
           {colors.map((color, idx) => (
-            <Image key={`image_${idx}`} id={`image_${idx}`} url={color.url} />
+            <Image key={`image_${idx}`} id={`get_id(idx)`} url={color.url} />
           ))}
         </defs>
       )}
@@ -51,7 +53,7 @@ export const Grid = ({tile, shape}) => {
     const st = {...state}
     const {map} = st[shape]
     if(map[idx] === null) return '#FFFFFF'
-    return `url(#tile_${map[idx]})`
+    return `url(#tile_${map[idx].id})`
   }
 
   return (
@@ -59,7 +61,7 @@ export const Grid = ({tile, shape}) => {
       <defs>
         {state[shape].tiles.map((tile, idx) => (
           <Pattern
-            id={`tile_${idx}`}
+            id={`tile_${tile.id}`}
             pattern={tile.pattern}
             colors={tile.colors}
             rotate={tile.rotate}
@@ -69,7 +71,7 @@ export const Grid = ({tile, shape}) => {
       {new Array(6).fill(null).map((row, row_idx) => (
         <>
         {new Array(6).fill(null).map((col, col_idx) => (
-          <rect x={col_idx * 72 + 1} y={row_idx * 72 + 1} width="72" height="72" stroke="#575756" stroke-width="1" fill={get_fill(col_idx, row_idx)} onClick={rect_click(col_idx, row_idx)} />
+          <rect x={col_idx * 72 + 1} y={row_idx * 72 + 1} width="72" height="72" stroke="#575756" strokeWidth="1" fill={get_fill(col_idx, row_idx)} onClick={rect_click(col_idx, row_idx)} />
         ))}
         </>
       ))}

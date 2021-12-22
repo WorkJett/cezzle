@@ -1,7 +1,6 @@
 import styled from 'styled-components'
 
 import grid_svg from 'assets/grid.svg'
-import pattern_svg from 'assets/pattern.svg'
 import empty_pattern_svg from 'assets/empty_pattern.svg'
 import turn_right_svg from 'assets/turn_right.svg'
 import turn_left_svg from 'assets/turn_left.svg'
@@ -44,16 +43,20 @@ export const PatternBox = styled.div`
   align-items: center;
 `
 
-const pattern_content = ({url}) => url ? `
-  background-image: url(${pattern_svg});
-` : `
-  background-image: url(${empty_pattern_svg});
-`
+const empty_pattern = ({shape}) => {
+  if(shape === 'cube') return 'border: 1px solid #575756;'
+  return `
+    background-position: center;
+    background-size: 48px 48px;
+    background-repeat: no-repeat;
+    background-image: url(${empty_pattern_svg});
+  `
+}
 
 export const EmptyPattern = styled.div`
   width: 48px;
   height: 48px;
-  border: 1px solid #575756;
+  ${empty_pattern}
 `
 
 export const Details = styled.div`

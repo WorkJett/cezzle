@@ -14,16 +14,12 @@ export const Container = styled.div`
 export const Tile = styled.div`
   width: 436px;
   height: 436px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   grid-column: 1;
   grid-row: 1 / 4;
 `
-
-// background-position: center;
-// background-size: contain;
-// background-repeat: no-repeat;
-// background-image: url(${tile_svg});
-// cursor: pointer;
-
 
 export const Palette = styled.div`
   width: 336px;

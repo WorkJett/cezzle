@@ -139,22 +139,23 @@ const shapeBlock_active = ({active}) => active ? `
 ` : ''
 
 const ShapeBlock = styled.div`
-  width: 107px;
+  width: 114px;
   height: 107px;
   box-sizing: border-box;
   ${shapeBlock_active}
   background-position: center;
-  background-size: 100px 100px;
   background-repeat: no-repeat;
   cursor: pointer;
 `
 
 export const Cube = styled(ShapeBlock)`
+  background-size: 97px 98px;
   background-image: url(${cube_svg});
   margin-left: 23px;
 `
 
 export const Hex = styled(ShapeBlock)`
+  background-size: 114px 97px;
   background-image: url(${hex_svg});
   margin-left: 25px;
 `

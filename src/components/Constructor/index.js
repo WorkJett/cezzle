@@ -19,9 +19,9 @@ import {
 } from './layout'
 import {Pattern} from 'components/Pattern'
 import {Grid} from 'components/Grid'
+import {Hex} from 'components/Hex'
 import {useSt} from 'state/context'
 import {uniq} from 'helper'
-
 
 export const Constructor = ({shape}) => {
   const [ptrn, setPtrn] = useState(null)
@@ -61,16 +61,28 @@ export const Constructor = ({shape}) => {
   const remove_click = () => {
     if(ptrn === null) return
     const st = {...state}
-    const {tiles} = st[shape]
-    tiles.splice(ptrn, 1)
+    const {tiles, map} = st[shape]
+    const tile = tiles.splice(ptrn, 1)
+    map.forEach((each, idx) => {
+      if(each === tile) map[idx] = null
+    })
     setState(st)
     setPtrn(null)
   }
 
+  const uniq_cur = patterns[ptrn] && uniq(patterns[ptrn].colors.map(color => color.title))
+  const uniq_colors = tile => uniq(tile.colors.map(color => color.title))
+  const pattern_viewbox = shape === 'cube' ? null : '0 0 436 378'
+
   return (
     <Container>
       <GridBox>
-        <Grid tile={ptrn} shape={shape} />
+        {shape === 'cube' && (
+          <Grid tile={state[shape].tiles[ptrn]} shape={shape} />
+        )}
+        {shape === 'hex' && (
+          <Hex tile={state[shape].tiles[ptrn]} shape={shape} />
+        )}
       </GridBox>
       <Patterns>
         {patterns.map((pattern, idx) => (
@@ -80,12 +92,13 @@ export const Constructor = ({shape}) => {
                 pattern={pattern.pattern}
                 colors={pattern.colors}
                 rotate={pattern.rotate}
+                viewbox={pattern_viewbox}
                 stroke={4}
                 width={48}
                 height={48}
               />
             )}
-              {!pattern && (<EmptyPattern />)}
+            {!pattern && (<EmptyPattern shape={shape} />)}
           </PatternBox>
         ))}
       </Patterns>
@@ -94,8 +107,8 @@ export const Constructor = ({shape}) => {
           <DetailsTitle>Паттерн:</DetailsTitle>
           <DetailsText>{patterns[ptrn].pattern.title}</DetailsText>
           <DetailsTitle>Цвета:</DetailsTitle>
-          {patterns[ptrn].colors.map((color, idx) => (
-            <DetailsText>{idx + 1}. {color.title}</DetailsText>
+          {uniq_cur.map((color, idx) => (
+            <DetailsText>{idx + 1}. {color}</DetailsText>
           ))}
         </Details>
       )}
@@ -108,7 +121,7 @@ export const Constructor = ({shape}) => {
       }
       <PatternsNames>
         {state[shape].tiles.map((tile, idx) => (
-          <PatternsName>{idx + 1}. Паттерн {tile.pattern.title}, цвета: {tile.colors.map(color => color.title).reduce((prev, next) => `${prev}, ${next}`)} - {tile.colors.length} шт</PatternsName>
+          <PatternsName>{idx + 1}. Паттерн {tile.pattern.title}, цвета: {uniq_colors(tile).reduce((prev, next) => `${prev}, ${next}`)} - {uniq_colors(tile).length} шт</PatternsName>
         ))}
       </PatternsNames>
     </Container>
