@@ -39,7 +39,7 @@ export const Grid = ({tile, shape}) => {
 
   const rect_click = (col, row) => {
     return () => {
-      if(tile === null) return
+      if(tile === null || tile === undefined) return
       const st = {...state}
       const {map} = st[shape]
       const idx = row * 6 + col
@@ -52,7 +52,7 @@ export const Grid = ({tile, shape}) => {
     const idx = row * 6 + col
     const st = {...state}
     const {map} = st[shape]
-    if(map[idx] === null) return '#FFFFFF'
+    if(map[idx] === null || map[idx] === undefined) return '#FFFFFF'
     return `url(#tile_${map[idx].id})`
   }
 

@@ -39,7 +39,7 @@ export const Hex = ({tile, shape}) => {
 
   const rect_click = idx => {
     return () => {
-      if(tile === null) return
+      if(tile === null || tile === undefined) return
       const st = {...state}
       const {map} = st[shape]
       map[idx] = tile
@@ -50,7 +50,7 @@ export const Hex = ({tile, shape}) => {
   const get_fill = idx => {
     const st = {...state}
     const {map} = st[shape]
-    if(map[idx] === null) return '#FFFFFF'
+    if(map[idx] === null || map[idx] === undefined) return '#FFFFFF'
     return `url(#tile_${map[idx].id})`
   }
 
