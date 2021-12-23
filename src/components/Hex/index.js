@@ -14,7 +14,7 @@ const Pattern = ({id, pattern, colors, rotate}) => {
   const get_color_id = colors ? colors.map(color => color.id).reduce((prev, next) => `${prev}_${next}`) : '0'
   const get_id = idx => `${pattern.id}_${get_color_id}_${idx}`
   const get_color = idx => colors && colors[idx] ? `url(#image_${get_id(idx)})` : '#FFFFFF'
-  const get_rotate = (rotate || 0) * 90
+  const get_rotate = `rotate(${(rotate || 0) * 60}, 218, 189)` 
 
   return (
     <pattern id={id} viewBox="0 0 436 378" width="100%" height="100%">
@@ -25,7 +25,7 @@ const Pattern = ({id, pattern, colors, rotate}) => {
           ))}
         </defs>
       )}
-      <g transform={`rotate(${get_rotate}, 218, 218)`}>
+      <g transform={get_rotate}>
         {pattern.d.map((path, idx) => (
           <path key={idx} d={path} fill={get_color(idx)} stroke="#575756" strokeWidth={4}/>
         ))}

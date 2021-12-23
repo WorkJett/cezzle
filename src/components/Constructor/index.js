@@ -34,7 +34,7 @@ export const Constructor = ({shape}) => {
       ptrns[idx] = tile
     })
     setPatterns(ptrns)
-  }, [state])
+  }, [state, shape])
 
   const tile_click = idx => {
     return () => {
@@ -46,7 +46,10 @@ export const Constructor = ({shape}) => {
     if(ptrn === null) return
     const st = {...state}
     const {tiles} = st[shape]
-    tiles[ptrn].rotate = tiles[ptrn].rotate === 0 ? 3 : tiles[ptrn].rotate - 1
+    if(shape === 'cube')
+      tiles[ptrn].rotate = tiles[ptrn].rotate === 0 ? 3 : tiles[ptrn].rotate - 1
+    else
+      tiles[ptrn].rotate = tiles[ptrn].rotate === 0 ? 5 : tiles[ptrn].rotate - 1
     setState(st)
   }
 
@@ -54,7 +57,10 @@ export const Constructor = ({shape}) => {
     if(ptrn === null) return
     const st = {...state}
     const {tiles} = st[shape]
-    tiles[ptrn].rotate = tiles[ptrn].rotate === 3 ? 0 : tiles[ptrn].rotate + 1
+    if(shape === 'cube')
+      tiles[ptrn].rotate = tiles[ptrn].rotate === 3 ? 0 : tiles[ptrn].rotate + 1
+    else
+      tiles[ptrn].rotate = tiles[ptrn].rotate === 5 ? 0 : tiles[ptrn].rotate + 1
     setState(st)
   }
 
@@ -64,7 +70,7 @@ export const Constructor = ({shape}) => {
     const {tiles, map} = st[shape]
     const tile = tiles.splice(ptrn, 1)
     map.forEach((each, idx) => {
-      if(each === tile) map[idx] = null
+      if(each === tile[0]) map[idx] = null
     })
     setState(st)
     setPtrn(null)
@@ -89,6 +95,7 @@ export const Constructor = ({shape}) => {
           <PatternBox active={ptrn === idx} key={idx} onClick={tile_click(idx)}>
             {pattern && (
               <Pattern
+                shape={shape}
                 pattern={pattern.pattern}
                 colors={pattern.colors}
                 rotate={pattern.rotate}

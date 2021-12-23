@@ -62,7 +62,9 @@ export const App = () => {
   const [phone, setPhone] = useState('+7 920 000 00 00')
 
   const shape_click = shape => {
-    return () => setShape(shape)
+    return () => {
+      setShape(shape)
+    }
   }
 
   const collection_item_click = idx => {
@@ -101,7 +103,7 @@ export const App = () => {
           <Left />
           {state[shape].collection[coll].patterns.map((pattern, idx) => (
             <PatternBox active={ptrn === idx} onClick={pattern_click(idx)} key={pattern.id}>
-              <Pattern height={pattern_height} pattern={pattern} viewbox={pattern_viewbox} />
+              <Pattern shape={shape} height={pattern_height} pattern={pattern} viewbox={pattern_viewbox} />
             </PatternBox>
           ))}
           <Right />
