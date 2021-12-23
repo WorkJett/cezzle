@@ -64,6 +64,7 @@ export const App = () => {
   const shape_click = shape => {
     return () => {
       setShape(shape)
+      setPtrn(0)
     }
   }
 

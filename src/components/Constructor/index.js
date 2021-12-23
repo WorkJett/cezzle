@@ -36,6 +36,10 @@ export const Constructor = ({shape}) => {
     setPatterns(ptrns)
   }, [state, shape])
 
+  useEffect(() => {
+    setPtrn(null)
+  }, [shape])
+
   const tile_click = idx => {
     return () => {
       if(patterns[idx]) setPtrn(idx)
